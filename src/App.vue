@@ -1,31 +1,51 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <el-container>
+    <el-aside>
+      <el-menu
+        style="width: 250px"
+        class="el-menu-vertical-demo"
+        :default-active="this.$router.path"
+        router
+        mode="horizontal"
+        background-color="#545c64"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <el-menu-item
+          style="width: 100%"
+          v-for="(item,i) in navList"
+          :key="i"
+          :index="item.name"
+        >
+          {{ item.navItem }}
+        </el-menu-item>
+      </el-menu>
+    </el-aside>
+    <el-main>
+      <router-view></router-view>
+    </el-main>
+  </el-container>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script>
+export default {
+  data () {
+    return {
+      navList: [
+        { name: '/', navItem: '项目介绍' },
+        { name: '/findAppearMax', navItem: '选取数组出现频率最高的三个数' },
+        { name: '/quickSort', navItem: '快速排序' }
+      ]
+    }
+  },
+  created () {
+    debugger
+  }
 }
-#nav {
-  padding: 30px;
-}
+</script>
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+<style lang="less" module>
+body{
+  margin: 0
 }
 </style>
