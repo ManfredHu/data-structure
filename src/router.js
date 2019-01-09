@@ -1,14 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
+import config from './config'
 Vue.use(Router)
 
-const viewsList = ['index', 'findAppearMax', 'quickSort']
+const viewsList = config.algorithmType
 
-const routes = [{
-  path: '/',
-  component: () => import('./views/Index.vue')
-}]
+const routes = [{ path: '/', redirect: '/index' }]
 
 // dynamic routers
 viewsList.forEach(item => {

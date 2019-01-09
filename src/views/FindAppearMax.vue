@@ -10,19 +10,25 @@
       </el-col>
     </el-row>
     <h2>结果</h2>
-    <ul>
+    <ol>
       <li v-for="item in result" :key="item.value">
         值是{{item.value}}，次数为{{item.times}}
       </li>
-    </ul>
+    </ol>
     <h3>说明</h3>
     <p>
       输入框可以输入任意内容，以<code>,</code>号分割
     </p>
+    <p>
+      算法是用到了Object的key来进行统计计算次数，所以可能出现`1`和`'1'`相同的问题，如果有这个需求的同学可以通过类型区分的方式来进行排序。
+    </p>
+    <h3>过程日志输出</h3>
+    <div id="processLog"></div>
   </div>
 </template>
 
 <script>
+import log from '../util/log.js'
 export default {
   data () {
     return {
@@ -36,6 +42,7 @@ export default {
       const arr = this.input.split(/,|-|\//g)
       const resultObj = {}
       arr.forEach(item => resultObj[item] > 0 ? resultObj[item]++ : (resultObj[item] = 1))
+      log('统计每个数字出现的次数，输出Object统计对象:' + JSON.stringify(resultObj))
       return this.getTop(resultObj, num)
     },
     // 排序输出前num个最大元素
@@ -58,6 +65,7 @@ export default {
             }
           }
         }
+        log(`第${i + 1}次循环，统计数字${maxKey}出现的次数，出现了${maxNum}次`)
         delete resultObj[maxKey]
         result.push({
           value: maxKey,

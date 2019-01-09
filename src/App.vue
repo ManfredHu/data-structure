@@ -4,7 +4,7 @@
       <el-menu
         style="width: 250px"
         class="el-menu-vertical-demo"
-        :default-active="this.$router.path"
+        :default-active="$route.path"
         router
         mode="horizontal"
         background-color="#545c64"
@@ -28,18 +28,33 @@
 </template>
 
 <script>
+import config from './config.js'
 export default {
-  data () {
-    return {
-      navList: [
-        { name: '/', navItem: '项目介绍' },
-        { name: '/findAppearMax', navItem: '选取数组出现频率最高的三个数' },
-        { name: '/quickSort', navItem: '快速排序' }
-      ]
+  // data () {
+  //   return {
+  //     navList: [
+  //       { name: '/index', navItem: '项目介绍' },
+  //       { name: '/findAppearMax', navItem: '选取数组出现频率最高的三个数' },
+  //       { name: '/quickSort', navItem: '快速排序' }
+  //       { name: '/', navItem: '快速排序' }
+  //     ]
+  //   }
+  // },
+  computed: {
+    navList () {
+      const { algorithmType, algorithmName } = config
+      const navList = []
+      algorithmType.forEach((element, index) => {
+        navList.push({
+          name: element,
+          navItem: algorithmName[index]
+        })
+      })
+      return navList
     }
   },
   created () {
-    debugger
+    console.log('this.$route.path', this.$route.path)
   }
 }
 </script>
