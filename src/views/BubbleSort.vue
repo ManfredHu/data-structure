@@ -32,10 +32,14 @@
     <img src="../image/bubbleSort.gif" alt="冒泡排序" />
     <h3>时间复杂度</h3>
     <p>
-      比较次数： {{compareTimes}}({{arr.length}} * {{arr.length-1}})
+      比较次数： {{compareTimes}}({{arr.length}} * {{arr.length-1}} / 2)
     </p>
     <p>
-      有n个数，一共需要执行n(n-1)/2次比较，时间复杂度为O(n^2)
+      有n个数，一共需要执行n(n-1)/2次比较，时间复杂度为O(n^2)。
+    </p>
+    <h3>空间复杂度</h3>
+    <p>
+      无，都是数组内交换数字，O(1)
     </p>
     <h3>过程日志输出</h3>
     <div id="processLog"></div>
@@ -68,6 +72,7 @@ export default {
       }
     },
     swap (arr, i, j) {
+      log(`交换两个数arr[${i}]${arr[i]}和arr[${j}]${arr[j]}`)
       const temp = arr[i]
       arr[i] = arr[j]
       arr[j] = temp

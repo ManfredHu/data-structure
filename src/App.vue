@@ -30,16 +30,10 @@
 <script>
 import config from './config.js'
 export default {
-  // data () {
-  //   return {
-  //     navList: [
-  //       { name: '/index', navItem: '项目介绍' },
-  //       { name: '/findAppearMax', navItem: '选取数组出现频率最高的三个数' },
-  //       { name: '/quickSort', navItem: '快速排序' }
-  //       { name: '/', navItem: '快速排序' }
-  //     ]
-  //   }
-  // },
+  data () {
+    return {
+    }
+  },
   computed: {
     navList () {
       const { algorithmType, algorithmName } = config
@@ -54,7 +48,10 @@ export default {
     }
   },
   created () {
-    console.log('this.$route.path', this.$route.path)
+    // console.log('this.$route.path', this.$route.path)
+  },
+  mounted () {
+    // console.log('this.$route.path', this.$route.path)
   }
 }
 </script>

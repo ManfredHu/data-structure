@@ -5,7 +5,7 @@ Vue.use(Router)
 
 const viewsList = config.algorithmType
 
-const routes = [{ path: '/', redirect: '/index' }]
+const routes = []
 
 // dynamic routers
 viewsList.forEach(item => {
@@ -16,8 +16,16 @@ viewsList.forEach(item => {
     }
   })
 })
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 })
+
+// router.afterEach((to, from) => {
+//   if (to.fullPath === '/' && from.fullPath === '/') {
+//     // to.fullPath = '/index'
+//     debugger
+//   }
+// })
+export default router

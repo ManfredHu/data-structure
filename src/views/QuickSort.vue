@@ -6,34 +6,44 @@
         <el-input autofocus v-model="input" placeholder="请输入数组，以,号分割"></el-input>
       </el-col>
       <el-col :span="6">
-        <el-button type="primary" plain  @click="quickSort" ref>执行</el-button>
+        <el-button type="primary" plain  @click="handleClick" ref>执行</el-button>
       </el-col>
     </el-row>
     <h2>结果</h2>
-    <ul>
-      <!-- <li v-for="item in result" :key="item">
-        值是{{item.value}}，次数为{{item.times}}
-      </li> -->
-    </ul>
+    <ol>
+      <li v-for="(item,index) in result" :key="index">
+        值是{{item}}
+      </li>
+    </ol>
     <h3>说明</h3>
     <p>
       输入框可以输入任意内容，以<code>,</code>号分割。
     </p>
+    <h3>动图展示</h3>
+    <img src="../image/quickSort.gif" alt="冒泡排序" />
     <h3>时间复杂度</h3>
     <p>
-      比较次数： {{compareTimes}}()
+      实际比较次数： {{compareTimes}}
     </p>
+    <p>需要数学归纳法证明，最后得出：</p>
+    <p>最优时间复杂度为O(nlogn)</p>
+    <p>最差时间复杂度为O(n^2)</p>
+    <p>平均时间复杂度为O(nlogn)</p>
+    <h3>空间复杂度</h3>
     <p>
-      有n个数，一共需要执行n(n-1)/2次比较，时间复杂度为O(n^2)
+      O(logn)~O(n)
     </p>
+    <h3>过程日志输出</h3>
+    <div id="processLog"></div>
   </div>
 </template>
 
 <script>
+import log from '../util/log.js'
 export default {
   data () {
     return {
-      input: '8,23,3,4,6,10',
+      input: '3,44,38,5,47,15,36,26,27,2,46,4,19,50,48',
       result: [],
       arr: [],
       compareTimes: 0
@@ -42,16 +52,16 @@ export default {
   methods: {
     handleClick () {
       this.arr = this.input.split(/,|-|\//g).map(item => +item)
-      this.quickSort(this.arr)
+      this.result = this.quickSort(this.arr, 0, this.arr.length)
+      log(`最后数组为${this.result}`)
     },
-    quickSort (arr) {
-      const low = 0
-      const high = arr.length - 1
+    quickSort (arr, low, high) {
       if (low < high) {
         let partitionIndex = this.partition(arr, low, high)
         this.quickSort(arr, low, partitionIndex - 1)
-        // this.quickSort(arr, partitionIndex + 1, high)
+        this.quickSort(arr, partitionIndex + 1, high)
       }
+      return arr
     },
     partition (arr, left, right) {
       const pivot = left // 设定基准值（pivot）
@@ -67,6 +77,7 @@ export default {
       return index - 1
     },
     swap (arr, i, j) {
+      log(`此时数组为${arr},交换两个数arr[${i}](${arr[i]})和arr[${j}](${arr[j]})`)
       const temp = arr[i]
       arr[i] = arr[j]
       arr[j] = temp
