@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>冒泡排序</h1>
+    <h1>选择排序</h1>
     <el-row>
       <el-col :span="18">
         <el-input
@@ -13,7 +13,7 @@
         <el-button
           type="primary"
           plain
-          @click="bubbleSort"
+          @click="selectSort"
           ref
         >执行</el-button>
       </el-col>
@@ -29,13 +29,13 @@
       输入框可以输入任意内容，以<code>,</code>号分割。
     </p>
     <h3>动图展示</h3>
-    <img src="../image/bubbleSort.gif" alt="冒泡排序" />
+    <img src="../image/selectSort.gif" alt="选择排序" />
     <h3>时间复杂度</h3>
     <p>
-      有n个数，一共需要执行n(n-1)/2次比较，时间复杂度为O(n^2)。
+      时间复杂度为O(n^2)。
     </p>
     <p>
-      比较次数： {{compareTimes}}({{arr.length}} * {{arr.length-1}} / 2)
+      实际比较次数： {{compareTimes}}
     </p>
     <h3>空间复杂度</h3>
     <p>
@@ -58,21 +58,24 @@ export default {
     }
   },
   methods: {
-    bubbleSort () {
+    selectSort () {
       this.arr = this.input.split(/,|-|\//g).map(item => +item)
-      log(`共${this.arr.length}个数，需要执行${this.arr.length - 1}躺排序`)
+      // log(`共${this.arr.length}个数，需要执行${this.arr.length - 1}躺排序`)
       for (let i = 0; i < this.arr.length - 1; i++) {
-        for (let j = 0; j < this.arr.length - 1 - i; j++) {
+        let nowMinIndex = i
+        for (let j = i; j < this.arr.length - 1; j++) {
           this.compareTimes++
-          if (+this.arr[j] > +this.arr[j + 1]) {
-            this.swap(this.arr, j, j + 1)
+          if (+this.arr[j] < +this.arr[nowMinIndex]) {
+            nowMinIndex = j
           }
         }
-        log(`第${i + 1}躺排序，排序结果为:${this.arr}`)
+        this.swap(this.arr, i, nowMinIndex)
+        // log(`第${i + 1}躺排序，排序结果为:${this.arr}`)
       }
+      log(`最后数组为${this.arr}`)
     },
     swap (arr, i, j) {
-      log(`交换两个数arr[${i}]${arr[i]}和arr[${j}]${arr[j]}`)
+      log(`此时数组为${arr},交换两个数arr[${i}](${arr[i]})和arr[${j}](${arr[j]})`)
       const temp = arr[i]
       arr[i] = arr[j]
       arr[j] = temp
@@ -81,7 +84,7 @@ export default {
   mounted () {
     // default execute
     if (this.input) {
-      this.bubbleSort()
+      this.selectSort()
     }
   }
 }
