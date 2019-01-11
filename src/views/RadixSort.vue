@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>选择排序</h1>
+    <h1>基数排序</h1>
     <el-row>
       <el-col :span="18">
         <el-input
@@ -13,7 +13,7 @@
         <el-button
           type="primary"
           plain
-          @click="selectSort"
+          @click="radixSort"
           ref
         >执行</el-button>
       </el-col>
@@ -29,17 +29,18 @@
       输入框可以输入任意内容，以<code>,</code>号分割。
     </p>
     <h3>动图展示</h3>
-    <img src="../image/selectSort.gif" alt="选择排序" />
+    <img class="sortImg" src="../image/radixSort.gif" alt="冒泡排序" />
     <h3>时间复杂度</h3>
     <p>
-      时间复杂度为O(n^2)。
+      有n个数，看数字大小，分关键字为k.
+      比如都是100以内则k=2需要k*2n个，时间复杂度为O(d*2n)
     </p>
     <p>
-      实际比较次数： {{compareTimes}}
+      比较次数： {{compareTimes}}
     </p>
     <h3>空间复杂度</h3>
     <p>
-      无，都是数组内交换数字，O(1)
+      基数排序的空间复杂度为O(n+k)，其中k为桶的数量。一般来说n>>k，因此额外空间需要大概n个左右。
     </p>
     <h3>过程日志输出</h3>
     <div id="processLog"></div>
@@ -58,38 +59,45 @@ export default {
     }
   },
   methods: {
-    selectSort () {
+    radixSort () {
       this.arr = this.input.split(/,|-|\//g).map(item => +item)
-      // log(`共${this.arr.length}个数，需要执行${this.arr.length - 1}躺排序`)
-      for (let i = 0; i < this.arr.length - 1; i++) {
-        let nowMinIndex = i
-        for (let j = i; j < this.arr.length - 1; j++) {
+      let hasLarge = true
+      for (let mod = 10, divide = 1; hasLarge; divide *= 10) {
+        let counter = []
+        hasLarge = false
+        for (let i = 0; i < this.arr.length; i++) {
+          let num = parseInt(this.arr[i] / divide % mod)
           this.compareTimes++
-          if (+this.arr[j] < +this.arr[nowMinIndex]) {
-            nowMinIndex = j
+          if (parseInt(this.arr[i] / divide / 10) > 0) hasLarge = true // 如果有下个位数的数字，进入下轮循环
+          if (!counter[num]) {
+            counter[num] = []
           }
+          counter[num].push(this.arr[i])
         }
-        this.swap(this.arr, i, nowMinIndex)
-        // log(`第${i + 1}躺排序，排序结果为:${this.arr}`)
+
+        // 顺序统计counter的内容到this.arr
+        this.arr = []
+        counter.forEach(i => {
+          i.forEach(j => {
+            this.arr.push(j)
+          })
+        })
+        log(`按照基数${divide}排序，得到结果${this.arr}`)
       }
-      log(`最后数组为${this.arr}`)
-    },
-    swap (arr, i, j) {
-      if (i === j) return
-      log(`此时数组为${arr},交换两个数arr[${i}](${arr[i]})和arr[${j}](${arr[j]})`)
-      const temp = arr[i]
-      arr[i] = arr[j]
-      arr[j] = temp
+      return this.arr
     }
   },
   mounted () {
     // default execute
     if (this.input) {
-      this.selectSort()
+      this.radixSort()
     }
   }
 }
 </script>
 
 <style>
+.sortImg{
+  width: 600px;
+}
 </style>

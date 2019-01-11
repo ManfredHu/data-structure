@@ -72,6 +72,7 @@ export default {
       }
     },
     swap (arr, i, j) {
+      if (i === j) return
       log(`交换两个数arr[${i}]${arr[i]}和arr[${j}]${arr[j]}`)
       const temp = arr[i]
       arr[i] = arr[j]

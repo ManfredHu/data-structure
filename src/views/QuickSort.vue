@@ -3,15 +3,27 @@
     <h1>快速排序</h1>
     <el-row>
       <el-col :span="18">
-        <el-input autofocus v-model="input" placeholder="请输入数组，以,号分割"></el-input>
+        <el-input
+          autofocus
+          v-model="input"
+          placeholder="请输入数组，以,号分割"
+        ></el-input>
       </el-col>
       <el-col :span="6">
-        <el-button type="primary" plain  @click="handleClick" ref>执行</el-button>
+        <el-button
+          type="primary"
+          plain
+          @click="handleClick"
+          ref
+        >执行</el-button>
       </el-col>
     </el-row>
     <h2>结果</h2>
     <ol>
-      <li v-for="(item,index) in result" :key="index">
+      <li
+        v-for="(item,index) in result"
+        :key="index"
+      >
         值是{{item}}
       </li>
     </ol>
@@ -20,7 +32,10 @@
       输入框可以输入任意内容，以<code>,</code>号分割。
     </p>
     <h3>动图展示</h3>
-    <img src="../image/quickSort.gif" alt="冒泡排序" />
+    <img
+      src="../image/quickSort.gif"
+      alt="冒泡排序"
+    />
     <h3>时间复杂度</h3>
     <p>
       实际比较次数： {{compareTimes}}
@@ -35,11 +50,71 @@
     </p>
     <h3>过程日志输出</h3>
     <div id="processLog"></div>
+    <hr />
+    <h2>效率更高的方式</h2>
+    <h3>第一种：（前后两个循环）</h3>
+    <div class="container">
+      <pre>
+        <code class="javascript">
+          function quickSortArr(arr, low, high) {
+            var pivot;
+            if (low &lt; high) {
+              pivot = partition(arr, low, high);
+              quickSortArr(arr, low, pivot - 1);
+              quickSortArr(arr, pivot + 1, high);
+            }
+            return arr;
+          }
+
+          //将数组的左边变成比它小的，右边变成比它大的
+          function partition(arr, low, high) {
+            var pivotkey;
+            pivotkey = arr[low];
+            while (low &lt; high) {
+              while (low &lt; high && arr[high] > pivotkey){
+                high--;
+              }
+              arr.swap(low, high);
+              while (low &lt; high && arr[low] &lt; pivotkey){
+                low++;
+              }
+              arr.swap(low, high);
+            }
+            return low;
+          }
+        </code>
+      </pre>
+    </div>
+    <h3>第二种：</h3>
+    <div class="container">
+      <pre>
+        <code class="javascript">
+          function quickSortArr(arr) {
+            if (arr.length &lt;= 1) {
+                return arr;
+            }
+            const pivotIndex = Math.floor(arr.length / 2);
+            const pivot = arr.splice(pivotIndex, 1)[0];
+            const left = [];
+            const right = [];
+            for (var i = 0; i &lt; arr.length; i++) {
+              if (arr[i] &lt; pivot) {
+                left.push(arr[i]);
+              } else {
+                right.push(arr[i]);
+              }
+            }
+            return quickSortArr(left).concat([pivot], quickSortArr(right));
+          }
+        </code>
+      </pre>
+    </div>
   </div>
 </template>
 
 <script>
 import log from '../util/log.js'
+
 export default {
   data () {
     return {
@@ -77,6 +152,7 @@ export default {
       return index - 1
     },
     swap (arr, i, j) {
+      if (i === j) return
       log(`此时数组为${arr},交换两个数arr[${i}](${arr[i]})和arr[${j}](${arr[j]})`)
       const temp = arr[i]
       arr[i] = arr[j]
@@ -93,5 +169,4 @@ export default {
 </script>
 
 <style>
-
 </style>
