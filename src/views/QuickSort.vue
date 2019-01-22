@@ -46,7 +46,7 @@
     <p>平均时间复杂度为O(nlogn)</p>
     <h3>空间复杂度</h3>
     <p>
-      O(logn)~O(n)
+      O(logn)~O(n)，不稳定
     </p>
     <h3>过程日志输出</h3>
     <div id="processLog"></div>
