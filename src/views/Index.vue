@@ -75,6 +75,14 @@
         <td>不稳定</td>
       </tr>
       <tr>
+        <td>计数排序</td>
+        <td>O(n+k)</td>
+        <td>O(n+k)</td>
+        <td>O(n+k)</td>
+        <td>O(n+k)</td>
+        <td>稳定</td>
+      </tr>
+      <tr>
         <td>基数排序</td>
         <td>O(n*k)</td>
         <td>O(n*k)</td>

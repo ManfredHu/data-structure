@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>堆排序</h1>
+    <h1>计数排序</h1>
     <el-row>
       <el-col :span="18">
         <el-input
@@ -13,7 +13,7 @@
         <el-button
           type="primary"
           plain
-          @click="heapSort"
+          @click="countingSort"
           ref
         >执行</el-button>
       </el-col>
@@ -29,19 +29,17 @@
       输入框可以输入任意内容，以<code>,</code>号分割。
     </p>
     <h3>动图展示</h3>
-    <img src="../image/heapSort.gif" alt="插入排序" />
+    <img src="../image/countingSort.gif" alt="计数排序" />
     <h3>时间复杂度</h3>
     <p>
-      时间复杂度平均为O(n^2)
-      时间复杂度最坏为O(n^2)
-      时间复杂度最好为O(n)，基本有序
+      时间复杂度是O(n+k)
     </p>
     <p>
-      实际比较次数： {{compareTimes}}
+      比较次数： {{compareTimes}}({{arr.length}} * {{arr.length-1}} / 2)
     </p>
     <h3>空间复杂度</h3>
     <p>
-      O(1)，稳定
+      空间复杂度是O(n+k)
     </p>
     <h3>过程日志输出</h3>
     <div id="processLog"></div>
@@ -53,47 +51,44 @@ import log from '../util/log.js'
 export default {
   data () {
     return {
-      // input: '3,44,38,5,47,15,36,26,27,2,46,4,19,50,48',
-      input: '3,44,38,5',
+      input: '2,3,8,7,1,2,2,2,7,3,9,8,2,1,4,2,4,6,9,2',
       result: [],
       arr: [],
       compareTimes: 0
     }
   },
   methods: {
-    heapSort () {
+    countingSort () {
       this.arr = this.input.split(/,|-|\//g).map(item => +item)
-      this.buildMaxHeap(this.arr)
+      const counting = {}
+      for (let i = 0; i < this.arr.length; i++) {
+        if (!counting[this.arr[i]]) {
+          counting[this.arr[i]] = 0
+        }
+        counting[this.arr[i]]++
+      }
+      log(`收集次数信息:${JSON.stringify(counting)}`)
+      const result = []
+      for (let j in counting) {
+        for (let time = 0; time < counting[j]; time++) {
+          result.push(j)
+        }
+      }
+      log(`最后排序结果为:${result}`)
+      // log(`共${this.arr.length}个数，需要执行${this.arr.length - 1}躺排序`)
+      // for (let i = 0; i < this.arr.length - 1; i++) {
+      //   for (let j = 0; j < this.arr.length - 1 - i; j++) {
+      //     this.compareTimes++
+      //     if (+this.arr[j] > +this.arr[j + 1]) {
+      //       this.swap(this.arr, j, j + 1)
+      //     }
+      //   }
 
-      for (let i = this.arr.length - 1; i > 0; i--) {
-        this.swap(this.arr, 0, i)
-      }
-      // log(`最后数组为${this.arr}`)
-    },
-    buildMaxHeap (arr) {
-      debugger
-      for (let i = Math.floor(arr.length / 2); i >= 0; i--) {
-        this.heapify(arr, i)
-      }
-    },
-    heapify (arr, i) {
-      const left = 2 * i + 1
-      const right = 2 * i + 2
-      let largest = i
-      if (left < arr.length && arr[left] > arr[largest]) {
-        largest = left
-      }
-      if (right < arr.length && arr[right] > arr[largest]) {
-        largest = right
-      }
-      if (largest !== i) {
-        this.swap(arr, i, largest)
-        this.heapify(arr, largest)
-      }
+      // }
     },
     swap (arr, i, j) {
       if (i === j) return
-      log(`此时数组为${arr},交换两个数arr[${i}](${arr[i]})和arr[${j}](${arr[j]})`)
+      log(`交换两个数arr[${i}]${arr[i]}和arr[${j}]${arr[j]}`)
       const temp = arr[i]
       arr[i] = arr[j]
       arr[j] = temp
@@ -102,7 +97,7 @@ export default {
   mounted () {
     // default execute
     if (this.input) {
-      this.heapSort()
+      this.countingSort()
     }
   }
 }
