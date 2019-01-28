@@ -11,5 +11,6 @@ module.exports = {
       proxy: null
     },
     devtool: 'source-map'
-  }
+  },
+  publicPath: '/data-structure/'
 }
