@@ -104,6 +104,7 @@
                 right.push(arr[i]);
               }
             }
+            // 打平一层，如跟concat(pivot)一样
             return quickSortArr(left).concat([pivot], quickSortArr(right));
           }
         </code>
